@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/Kelvin-Jesus/lirio/internal/lexer"
+	"github.com/Kelvin-Jesus/lirio/internal/token"
 )
 
 func main() {
@@ -13,17 +16,26 @@ func main() {
 	filename := os.Args[1]
 	fmt.Println(filename)
 
-	ReadFile(filename)
+	sourceCode, err := ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
 
-	// @TODO Tokenize source code
+	fmt.Println("\nLexer:")
+
+	var tokens []token.Token
+	lxr := lexer.Lexer{
+		Source: []rune(string(sourceCode)),
+		Tokens: tokens,
+	}
+
+	lxr.Tokenize()
+
+	for _, tok := range lxr.Tokens {
+		fmt.Println(tok.AsString())
+	}
 }
 
-func ReadFile(filePath string) {
-	// sourceCodeFileDescriptor, error := os.Open(filePath)
-	// if error != nil {
-	// 	panic("error opening source file")
-	// }
-
-	file, _ := os.ReadFile(filePath)
-	fmt.Println(string(file))
+func ReadFile(filePath string) ([]byte, error) {
+	return os.ReadFile(filePath)
 }
