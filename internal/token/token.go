@@ -32,6 +32,9 @@ const (
 	TOK_NEQ           TokenType = "TOK_NEQ"           // !=
 	TOK_LESS_OR_EQ    TokenType = "TOK_LESS_OR_EQ"    // <=
 	TOK_GREATER_OR_EQ TokenType = "TOK_GREATER_OR_EQ" // >=
+
+	TOK_FLOAT   TokenType = "TOK_FLOAT"   // 0.0
+	TOK_INTEGER TokenType = "TOK_INTEGER" // 0
 )
 
 type Token struct {
