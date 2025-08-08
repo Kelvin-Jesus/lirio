@@ -1,13 +1,17 @@
 package lexer
 
 import (
+	"unicode"
+
 	"github.com/Kelvin-Jesus/lirio/internal/token"
 )
 
 // start and current keeps track of the
 // range of characters beeing tokenized
-var start int = 0
-var current int = 0
+var (
+	start   int = 0
+	current int = 0
+)
 
 // Keeps tracking of the current line
 // of source code
@@ -94,11 +98,31 @@ func (lexer *Lexer) Tokenize() {
 			} else {
 				lexer.addToken(token.TOK_GREATER)
 			}
+		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+			lexer.handleNumber()
 		}
-		// @TODO: Check if it's a digit(integer or float)
 		// @TODO If is the ' token, apply logic to read an entire string
 		// @TODO iF is an alpha caracther, _ or ?, then treat as a identifier
 
+	}
+}
+
+func (lexer *Lexer) handleNumber() {
+	for unicode.IsDigit(lexer.peek()) {
+		lexer.advance()
+	}
+
+	// if the next token is . and the next is another digit, if it is
+	// that's a float
+	if lexer.peek() == '.' && unicode.IsDigit(lexer.lookAhead(1)) {
+		lexer.advance() // consumes the '.'
+		for unicode.IsDigit(lexer.peek()) {
+			lexer.advance()
+		}
+
+		lexer.addToken(token.TOK_FLOAT)
+	} else {
+		lexer.addToken(token.TOK_INTEGER)
 	}
 }
 
