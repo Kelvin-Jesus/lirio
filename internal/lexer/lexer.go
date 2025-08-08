@@ -69,7 +69,35 @@ func (lexer *Lexer) Tokenize() {
 			lexer.addToken(token.TOK_QUESTION)
 		case '%':
 			lexer.addToken(token.TOK_MOD_SIGN)
+		case '=':
+			// is "=="
+			if lexer.match('=') {
+				lexer.addToken(token.TOK_EQ)
+			} else {
+				lexer.addToken(token.TOK_ASSIGN_OP)
+			}
+		case '!':
+			if lexer.match('=') {
+				lexer.addToken(token.TOK_NEQ)
+			} else {
+				lexer.addToken(token.TOK_NOT)
+			}
+		case '<':
+			if lexer.match('=') {
+				lexer.addToken(token.TOK_LESS_OR_EQ)
+			} else {
+				lexer.addToken(token.TOK_LESS)
+			}
+		case '>':
+			if lexer.match('=') {
+				lexer.addToken(token.TOK_GREATER_OR_EQ)
+			} else {
+				lexer.addToken(token.TOK_GREATER)
+			}
 		}
+		// @TODO: Check if it's a digit(integer or float)
+		// @TODO If is the ' token, apply logic to read an entire string
+		// @TODO iF is an alpha caracther, _ or ?, then treat as a identifier
 
 	}
 }

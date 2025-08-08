@@ -23,6 +23,15 @@ const (
 	TOK_SEMICOLON      TokenType = "TOK_SEMICOLON"      // ;
 	TOK_QUESTION       TokenType = "TOK_QUESTION"       // ?
 	TOK_MOD_SIGN       TokenType = "TOK_MOD_SIGN"       // %
+	TOK_ASSIGN_OP      TokenType = "TOK_ASSIGN_OP"      // =
+	TOK_GREATER        TokenType = "TOK_GREATER"        // >
+	TOK_LESS           TokenType = "TOK_LESS"           // <
+	TOK_NOT            TokenType = "TOK_NOT"            // !
+	// Double char tokens
+	TOK_EQ            TokenType = "TOK_EQ"            // ==
+	TOK_NEQ           TokenType = "TOK_NEQ"           // !=
+	TOK_LESS_OR_EQ    TokenType = "TOK_LESS_OR_EQ"    // <=
+	TOK_GREATER_OR_EQ TokenType = "TOK_GREATER_OR_EQ" // >=
 )
 
 type Token struct {
