@@ -1,2 +1,6 @@
-// Evaluate a simple expression
-2 + 3 - 1 * 2
+// Evaluate a simple expression should be + ignored
+// 2 + 3 - 1 * 2
++**-;   ;+
++++++
+-----
+;;;;; ;;; ; ;
