@@ -100,11 +100,37 @@ func (lexer *Lexer) Tokenize() {
 			}
 		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 			lexer.handleNumber()
-		}
-		// @TODO If is the ' token, apply logic to read an entire string
-		// @TODO iF is an alpha caracther, _ or ?, then treat as a identifier
+		//single quote "'"
+		case '\'':
+			lexer.handleString()
+		case 'l':
+			if lexer.peek() == 'e' && lexer.lookAhead(1) == 't' {
+				lexer.advance()
+				lexer.advance()
+				lexer.advance()
+			}
 
+			// if starts with ?, it's not valid
+			if lexer.peek() == '?' {
+				panic("A Identifier should not start with the '?' character")
+			}
+
+			for unicode.IsLetter(lexer.peek()) || unicode.IsDigit(lexer.peek()) || lexer.peek() == '_' || lexer.peek() == '?' && lexer.peek() != '\n' {
+				lexer.advance()
+			}
+
+			lexer.addToken(token.TOK_IDENTIFIER)
+		}
 	}
+}
+
+func (lexer *Lexer) handleString() {
+	for lexer.peek() != '\'' {
+		lexer.advance()
+	}
+
+	lexer.advance()
+	lexer.addToken(token.TOK_STRING)
 }
 
 func (lexer *Lexer) handleNumber() {
@@ -112,8 +138,8 @@ func (lexer *Lexer) handleNumber() {
 		lexer.advance()
 	}
 
-	// if the next token is . and the next is another digit, if it is
-	// that's a float
+	// if the next token is . and the next is another digit,
+	// if true, that's a float
 	if lexer.peek() == '.' && unicode.IsDigit(lexer.lookAhead(1)) {
 		lexer.advance() // consumes the '.'
 		for unicode.IsDigit(lexer.peek()) {

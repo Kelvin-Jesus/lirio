@@ -6,3 +6,10 @@
 ;;;;; ;;; ; ;
 = < >= <= == != ! ;>
 265 + 4 * 56 + 3.1415
+
+'testing' 'testing2'
+
+let testando = 123
+let verdadeiro? = true
+let _testando? = 1.2
+let nome = 'Kelvin'

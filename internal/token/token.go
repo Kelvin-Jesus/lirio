@@ -27,14 +27,18 @@ const (
 	TOK_GREATER        TokenType = "TOK_GREATER"        // >
 	TOK_LESS           TokenType = "TOK_LESS"           // <
 	TOK_NOT            TokenType = "TOK_NOT"            // !
+	TOK_QUOTE          TokenType = "TOK_QUOTE"          // '
 	// Double char tokens
 	TOK_EQ            TokenType = "TOK_EQ"            // ==
 	TOK_NEQ           TokenType = "TOK_NEQ"           // !=
 	TOK_LESS_OR_EQ    TokenType = "TOK_LESS_OR_EQ"    // <=
 	TOK_GREATER_OR_EQ TokenType = "TOK_GREATER_OR_EQ" // >=
 
-	TOK_FLOAT   TokenType = "TOK_FLOAT"   // 0.0
-	TOK_INTEGER TokenType = "TOK_INTEGER" // 0
+	TOK_FLOAT      TokenType = "TOK_FLOAT"      // 0.0
+	TOK_INTEGER    TokenType = "TOK_INTEGER"    // 0
+	TOK_STRING     TokenType = "TOK_STRING"     // 'testing'
+	TOK_IDENTIFIER TokenType = "TOK_IDENTIFIER" // let [a-zA-Z][a-zA-Z0-9_\?]*
+	TOK_BOOL       TokenType = "TOK_BOOL"       // true || false
 )
 
 type Token struct {
