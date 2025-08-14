@@ -1,6 +1,7 @@
 package lexer
 
 import (
+	"fmt"
 	"unicode"
 
 	"github.com/Kelvin-Jesus/lirio/internal/token"
@@ -104,24 +105,52 @@ func (lexer *Lexer) Tokenize() {
 		case '\'':
 			lexer.handleString()
 		case 'l':
-			if lexer.peek() == 'e' && lexer.lookAhead(1) == 't' {
-				lexer.advance()
-				lexer.advance()
-				lexer.advance()
-			}
-
-			// if starts with ?, it's not valid
-			if lexer.peek() == '?' {
-				panic("A Identifier should not start with the '?' character")
-			}
-
-			for unicode.IsLetter(lexer.peek()) || unicode.IsDigit(lexer.peek()) || lexer.peek() == '_' || lexer.peek() == '?' && lexer.peek() != '\n' {
-				lexer.advance()
-			}
-
-			lexer.addToken(token.TOK_IDENTIFIER)
+			lexer.handleIdentifier()
 		}
 	}
+}
+
+func (lexer *Lexer) handleIdentifier() {
+	if lexer.peek() == 'e' && lexer.lookAhead(1) == 't' {
+		lexer.advance()
+		lexer.advance()
+		lexer.advance()
+	}
+
+	// if starts with ?, it's not valid
+	if lexer.peek() == '?' {
+		panic(
+			fmt.Sprintf(
+				"error in line: [%d] -> A Identifier should not start with the '?' character",
+				currentLine,
+			),
+		)
+	}
+
+	for unicode.IsLetter(lexer.peek()) || unicode.IsDigit(lexer.peek()) || lexer.peek() == '_' || lexer.peek() == '?' && lexer.peek() != '\n' {
+		lexer.advance()
+	}
+
+	// check if identifier matches any keyword from hashmap
+	// sum start with 4 'cause of the identifier is
+	// 'let '
+	isLetIdentifier := string(lexer.Source[start:current]) == "let"
+
+	currentText := lexer.Source[start+4 : current]
+	fmt.Println(string(currentText))
+	if _, ok := token.Keywords[string(currentText)]; ok {
+		if isLetIdentifier {
+			panic(
+				fmt.Sprintf(
+					"error in line [%d] -> '%s' is a keyword and should not be used as an identifier",
+					currentLine,
+					string(currentText),
+				),
+			)
+		}
+	}
+
+	lexer.addToken(token.TOK_IDENTIFIER)
 }
 
 func (lexer *Lexer) handleString() {

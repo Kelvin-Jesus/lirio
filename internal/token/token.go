@@ -33,13 +33,37 @@ const (
 	TOK_NEQ           TokenType = "TOK_NEQ"           // !=
 	TOK_LESS_OR_EQ    TokenType = "TOK_LESS_OR_EQ"    // <=
 	TOK_GREATER_OR_EQ TokenType = "TOK_GREATER_OR_EQ" // >=
+	TOK_AND_OP        TokenType = "TOK_AND_OP"        // &&
+	TOK_OR_OP         TokenType = "TOK_OR_OP"         // ||
 
+	// Literals
 	TOK_FLOAT      TokenType = "TOK_FLOAT"      // 0.0
 	TOK_INTEGER    TokenType = "TOK_INTEGER"    // 0
 	TOK_STRING     TokenType = "TOK_STRING"     // 'testing'
 	TOK_IDENTIFIER TokenType = "TOK_IDENTIFIER" // let [a-zA-Z][a-zA-Z0-9_\?]*
-	TOK_BOOL       TokenType = "TOK_BOOL"       // true || false
+
+	// Keywords
+	TOK_IF       TokenType = "TOK_IF"   // if
+	TOK_ELSE     TokenType = "TOK_ELSE" // else
+	TOK_BOOL     TokenType = "TOK_BOOL" // true || false
+	TOK_WHILE    TokenType = "TOK_WHILE"
+	TOK_FOR      TokenType = "TOK_FOR"
+	TOK_FUNCTION TokenType = "TOK_FUNCTION" // fn
+	TOK_NIL      TokenType = "TOK_NIL"      // Nil
+	TOK_RETURN   TokenType = "TOK_RETURN"   // return
 )
+
+var Keywords = map[string]TokenType{
+	"if":     TOK_IF,
+	"else":   TOK_ELSE,
+	"true":   TOK_BOOL,
+	"false":  TOK_BOOL,
+	"while":  TOK_WHILE,
+	"for":    TOK_FOR,
+	"fn":     TOK_FUNCTION,
+	"nil":    TOK_NIL,
+	"return": TOK_RETURN,
+}
 
 type Token struct {
 	Type   TokenType

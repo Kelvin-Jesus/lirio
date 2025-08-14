@@ -12,4 +12,7 @@
 let testando = 123
 let verdadeiro? = true
 let _testando? = 1.2
-let nome = 'Kelvin'
+// following code is error for using wrong id name 
+//   let ?nome = 'Kelvin'
+// will give a error for using a keyword as id
+//   let while = 'true'
