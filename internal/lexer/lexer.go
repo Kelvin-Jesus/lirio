@@ -33,12 +33,11 @@ func (lexer *Lexer) Tokenize() {
 
 		var character rune = lexer.advance()
 
-		switch character {
-		case '\n':
+		if character == '\n' {
 			currentLine++
-		case '\t', '\r':
+		} else if character == '\t' || character == '\r' {
 			continue
-		case '/':
+		} else if character == '/' {
 			// it's a comment
 			if lexer.peek() == '/' {
 				// consumes tokens until it reaches \n
@@ -48,63 +47,63 @@ func (lexer *Lexer) Tokenize() {
 			} else {
 				lexer.addToken(token.TOK_SLASH)
 			}
-		case '(':
+		} else if character == '(' {
 			lexer.addToken(token.TOK_LEFT_PAREN)
-		case ')':
+		} else if character == ')' {
 			lexer.addToken(token.TOK_RIGHT_PAREN)
-		case '[':
+		} else if character == '[' {
 			lexer.addToken(token.TOK_LEFT_SQR_BCKT)
-		case ']':
+		} else if character == ']' {
 			lexer.addToken(token.TOK_RIGHT_SQR_BCKT)
-		case '.':
+		} else if character == '.' {
 			lexer.addToken(token.TOK_DOT)
-		case ',':
+		} else if character == ',' {
 			lexer.addToken(token.TOK_COMMA)
-		case '+':
+		} else if character == '+' {
 			lexer.addToken(token.TOK_PLUS_SIGN)
-		case '-':
+		} else if character == '-' {
 			lexer.addToken(token.TOK_MINUS_SIGN)
-		case '*':
+		} else if character == '*' {
 			lexer.addToken(token.TOK_STAR_SIGN)
-		case '^':
+		} else if character == '^' {
 			lexer.addToken(token.TOK_CARET)
-		case ';':
+		} else if character == ';' {
 			lexer.addToken(token.TOK_SEMICOLON)
-		case '?':
+		} else if character == '?' {
 			lexer.addToken(token.TOK_QUESTION)
-		case '%':
+		} else if character == '%' {
 			lexer.addToken(token.TOK_MOD_SIGN)
-		case '=':
+		} else if character == '=' {
 			// is "=="
 			if lexer.match('=') {
 				lexer.addToken(token.TOK_EQ)
 			} else {
 				lexer.addToken(token.TOK_ASSIGN_OP)
 			}
-		case '!':
+		} else if character == '!' {
 			if lexer.match('=') {
 				lexer.addToken(token.TOK_NEQ)
 			} else {
 				lexer.addToken(token.TOK_NOT)
 			}
-		case '<':
+		} else if character == '<' {
 			if lexer.match('=') {
 				lexer.addToken(token.TOK_LESS_OR_EQ)
 			} else {
 				lexer.addToken(token.TOK_LESS)
 			}
-		case '>':
+		} else if character == '>' {
 			if lexer.match('=') {
 				lexer.addToken(token.TOK_GREATER_OR_EQ)
 			} else {
 				lexer.addToken(token.TOK_GREATER)
 			}
-		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+		} else if unicode.IsDigit(character) {
 			lexer.handleNumber()
-		//single quote "'"
-		case '\'':
+		} else if character == '\'' {
+			//single quote "'"
 			lexer.handleString()
-		case 'l':
+		} else if character == 'l' {
 			lexer.handleIdentifier()
 		}
 	}
