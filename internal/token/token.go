@@ -51,6 +51,7 @@ const (
 	TOK_FUNCTION TokenType = "TOK_FUNCTION" // fn
 	TOK_NIL      TokenType = "TOK_NIL"      // Nil
 	TOK_RETURN   TokenType = "TOK_RETURN"   // return
+	TOK_LET      TokenType = "TOK_LET"      // let
 )
 
 var Keywords = map[string]TokenType{
@@ -63,6 +64,7 @@ var Keywords = map[string]TokenType{
 	"fn":     TOK_FUNCTION,
 	"nil":    TOK_NIL,
 	"return": TOK_RETURN,
+	"let":    TOK_LET,
 }
 
 type Token struct {

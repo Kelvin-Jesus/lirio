@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"fmt"
+	"strings"
 	"unicode"
 
 	"github.com/Kelvin-Jesus/lirio/internal/token"
@@ -104,49 +105,49 @@ func (lexer *Lexer) Tokenize() {
 			//single quote "'"
 			lexer.handleString()
 		} else if character == 'l' {
+			if lexer.peek() == 'e' && lexer.lookAhead(1) == 't' {
+				lexer.advance()
+				lexer.advance()
+				lexer.addToken(token.TOK_LET)
+			}
+
+			current++
+			start = current
+
+			// if starts with ?, it's not valid
+			if lexer.peek() == '?' {
+				panic(
+					fmt.Sprintf(
+						"error in line: [%d] -> A Identifier should not start with the '?' character",
+						currentLine,
+					),
+				)
+			}
+
 			lexer.handleIdentifier()
 		}
 	}
 }
 
 func (lexer *Lexer) handleIdentifier() {
-	if lexer.peek() == 'e' && lexer.lookAhead(1) == 't' {
-		lexer.advance()
-		lexer.advance()
-		lexer.advance()
-	}
-
-	// if starts with ?, it's not valid
-	if lexer.peek() == '?' {
-		panic(
-			fmt.Sprintf(
-				"error in line: [%d] -> A Identifier should not start with the '?' character",
-				currentLine,
-			),
-		)
-	}
+	// fmt.Println(string(lexer.Source[start:current]))
+	// fmt.Println(string(lexer.peek()))
+	// fmt.Println(string(lexer.Source[current:]))
 
 	for unicode.IsLetter(lexer.peek()) || unicode.IsDigit(lexer.peek()) || lexer.peek() == '_' || lexer.peek() == '?' && lexer.peek() != '\n' {
 		lexer.advance()
 	}
 
 	// check if identifier matches any keyword from hashmap
-	// sum start with 4 'cause of the identifier is
-	// 'let '
-	isLetIdentifier := string(lexer.Source[start:current]) == "let"
-
-	currentText := lexer.Source[start+4 : current]
-	fmt.Println(string(currentText))
-	if _, ok := token.Keywords[string(currentText)]; ok {
-		if isLetIdentifier {
-			panic(
-				fmt.Sprintf(
-					"error in line [%d] -> '%s' is a keyword and should not be used as an identifier",
-					currentLine,
-					string(currentText),
-				),
-			)
-		}
+	currentText := strings.Trim(string(lexer.Source[start:current]), " ")
+	if _, ok := token.Keywords[currentText]; ok {
+		panic(
+			fmt.Sprintf(
+				"error in line [%d] -> '%s' is a keyword and should not be used as an identifier",
+				currentLine,
+				string(currentText),
+			),
+		)
 	}
 
 	lexer.addToken(token.TOK_IDENTIFIER)
